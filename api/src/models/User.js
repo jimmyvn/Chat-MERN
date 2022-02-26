@@ -12,17 +12,22 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     required: [true, 'Email field is required'],
   },
+  password: {
+    type: String,
+    required: [true, 'Password field is required'],
+  },
   avatar: {
     type: String,
     default: null,
   },
   gender: {
     type: String,
+    enum: ['male', 'female', 'other'],
     maxlength: [10, 'Gender field can not more than 10 characters'],
     default: null,
   },
   dob: {
-    type: String,
+    type: Date,
     default: null,
   },
   active: {

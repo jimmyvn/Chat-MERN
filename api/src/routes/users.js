@@ -3,7 +3,7 @@ const {
   getAllUsers,
   getUser,
   createUser,
-  upadteUser,
+  updateUser,
   deleteUser
 } = require('../controllers/User')
 const router = express.Router()
@@ -20,7 +20,7 @@ router.route('/')
  */
 router.route('/:id')
   .get(getUser)
-  .patch(upadteUser)
+  .patch(updateUser)
   .delete(deleteUser)
 
 

@@ -2,10 +2,8 @@ const { ErrorAPIMessage } = require("../errors/customError")
 const User = require("../models/User")
 
 const getAllUsers = async (req, res) => {
-  await User.find()
-    .then((data) => {
-      res.status(200).json({ users: data })
-    })
+  const users = await User.find()
+  res.status(200).json({ users: users })
 }
 
 const getUser = async (req, res) => {
@@ -22,15 +20,19 @@ const createUser = async (req, res) => {
   res.status(200).json({ user: user })
 }
 
-const upadteUser = async (req, res) => {
-  const user = await User.findByIdAndUpdate({
-    _id: req.params.id
-  }, req.body, {
-    new: true,
-    runValidators: true,
-  })
+const updateUser = async (req, res) => {
+  delete req.body?.email
+  const user = await User.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    }
+  )
 
-  if (!channel) {
+  if (!user) {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
 
@@ -53,6 +55,6 @@ module.exports = {
   getAllUsers,
   getUser,
   createUser,
-  upadteUser,
+  updateUser,
   deleteUser
 }
