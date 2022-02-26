@@ -13,6 +13,21 @@ const ChannelSchema = new mongoose.Schema({
       'The title must be less than 200 characters',
     ],
   },
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  avatar: {
+    type: String,
+    required: false,
+    default: null,
+    maxlength: [
+      400,
+      'The title must be less than 400 characters',
+    ],
+  },
   description: {
     type: String,
     required: false,
@@ -21,10 +36,6 @@ const ChannelSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
-  },
-  members: {
-    type: Array,
-    required: true
   }
 }, {
   timestamps: true

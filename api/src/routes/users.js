@@ -4,7 +4,8 @@ const {
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getChannelsBelongTo
 } = require('../controllers/User')
 const router = express.Router()
 
@@ -23,5 +24,7 @@ router.route('/:id')
   .patch(updateUser)
   .delete(deleteUser)
 
+router.route('/:userId/channels')
+  .get(getChannelsBelongTo)
 
 module.exports = router

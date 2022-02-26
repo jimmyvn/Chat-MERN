@@ -1,4 +1,5 @@
 const { ErrorAPIMessage } = require("../errors/customError")
+const Channel = require("../models/Channel")
 const User = require("../models/User")
 
 const getAllUsers = async (req, res) => {
@@ -51,10 +52,19 @@ const deleteUser = async (req, res) => {
   res.status(200).json({ user: user })
 }
 
+const getChannelsBelongTo = async (req, res) => {
+  const channels = await Channel.find({
+    members: req.params.userId,
+  })
+
+  res.status(200).json({ channels: channels })
+}
+
 module.exports = {
   getAllUsers,
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getChannelsBelongTo,
 }

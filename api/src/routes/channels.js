@@ -4,7 +4,8 @@ const {
   createChannel,
   upadteChannel,
   deleteChannel,
-  getChannel
+  getChannel,
+  getChannelMessages,
 } = require('../controllers/Channel')
 const router = express.Router()
 
@@ -23,5 +24,7 @@ router.route('/:id')
   .patch(upadteChannel)
   .delete(deleteChannel)
 
+router.route('/:channelId/messages')
+  .get(getChannelMessages)
 
 module.exports = router

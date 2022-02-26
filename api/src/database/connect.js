@@ -6,7 +6,10 @@ require('dotenv').config({
 const connectionString = process.env.MONGODB_URL
 
 const connectDatabase = () => {
-  return mongoose.connect(connectionString)
+  return mongoose.connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
 }
 
 module.exports = connectDatabase

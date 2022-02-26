@@ -1,8 +1,11 @@
 const { ErrorAPIMessage } = require("../errors/customError")
+const Channel = require("../models/Channel")
 const ChannelMessage = require("../models/ChannelMessage")
+const User = require("../models/User")
 
 const getAllChannelMessages = async (req, res) => {
-  await ChannelMessage.find()
+  await ChannelMessage.find({})
+    .populate('user', '-__v -password -active -createdAt -updatedAt')
     .then((data) => {
       res.status(200).json({ messages: data })
     })
@@ -18,6 +21,16 @@ const getChannelMessage = async (req, res) => {
 }
 
 const createChannelMessage = async (req, res) => {
+  const channel = await Channel.findById(req.body.channel)
+
+  /**
+   * Check member exist or not
+   */
+  const memberExist = channel.members.indexOf(req.body.user)
+  if (memberExist === -1) {
+    throw new ErrorAPIMessage('The user is not a member in the channel', 500)
+  }
+
   const message = await ChannelMessage.create(req.body)
   res.status(200).json({ message: message })
 }

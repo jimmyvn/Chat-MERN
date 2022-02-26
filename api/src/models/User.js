@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-var uniqueValidator = require('mongoose-unique-validator')
+const uniqueValidator = require('mongoose-unique-validator')
+const bcrypt = require('bcryptjs')
+const Channel = require('./Channel')
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -10,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
+    uniqueCaseInsensitive: true,
     required: [true, 'Email field is required'],
   },
   password: {
@@ -37,6 +40,30 @@ const UserSchema = new mongoose.Schema({
 }, {
   timestamps: true,
 })
+
+UserSchema.pre('save', function (next) {
+  const user = this
+
+  if (this.isModified('password') || this.isNew) {
+    bcrypt.genSalt(10, function (saltError, salt) {
+      if (saltError) {
+        return next(saltError)
+      } else {
+        bcrypt.hash(user.password, salt, function (hashError, hash) {
+          if (hashError) {
+            return next(hashError)
+          }
+
+          user.password = hash
+          next()
+        })
+      }
+    })
+  } else {
+    return next()
+  }
+})
+
 uniqueValidator.defaults.message = 'User with same `{PATH}` already exists. Please try with another email address.'
 UserSchema.plugin(uniqueValidator)
 module.exports = mongoose.model('User', UserSchema)

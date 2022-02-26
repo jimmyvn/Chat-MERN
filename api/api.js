@@ -7,9 +7,10 @@ const connectDatabase = require('./src/database/connect')
 const app = express()
 
 // Routes
-const channelRoutes = require('./src/routes/channels')
-const channelMessages = require('./src/routes/channelMessages')
 const userRoutes = require('./src/routes/users')
+const channelRoutes = require('./src/routes/channels')
+const channelMemberRoutes = require('./src/routes/channelMembers')
+const channelMessagesRoutes = require('./src/routes/channelMessages')
 
 // middleware
 const NotFound = require('./src/middleware/NotFound')
@@ -18,7 +19,8 @@ app.use(express.json())
 
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/channels', channelRoutes)
-app.use('/api/v1/channel-messages', channelMessages)
+app.use('/api/v1/channels', channelMemberRoutes)
+app.use('/api/v1/channel-messages', channelMessagesRoutes)
 
 app.use(NotFound)
 app.use(errorHandler)
