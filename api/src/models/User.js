@@ -64,6 +64,20 @@ UserSchema.pre('save', function (next) {
   }
 })
 
+UserSchema.methods.isMemberOfChannel = function (channel) {
+  if (!channel.members.length) {
+    return false
+  }
+
+  const memberExist = channel.members.indexOf(this._id)
+
+  if (memberExist === -1) {
+    return false
+  }
+
+  return true
+}
+
 uniqueValidator.defaults.message = 'User with same `{PATH}` already exists. Please try with another email address.'
 UserSchema.plugin(uniqueValidator)
 module.exports = mongoose.model('User', UserSchema)

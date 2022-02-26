@@ -22,12 +22,16 @@ const getChannelMessage = async (req, res) => {
 
 const createChannelMessage = async (req, res) => {
   const channel = await Channel.findById(req.body.channel)
+  if (!channel) {
+    throw new ErrorAPIMessage('The channel is not exist', 404)
+  }
 
-  /**
-   * Check member exist or not
-   */
-  const memberExist = channel.members.indexOf(req.body.user)
-  if (memberExist === -1) {
+  const user = await User.findById(req.body.user)
+  if (!user) {
+    throw new ErrorAPIMessage('The user is not exist', 404)
+  }
+
+  if (!user.isMemberOfChannel(channel)) {
     throw new ErrorAPIMessage('The user is not a member in the channel', 500)
   }
 
@@ -36,15 +40,17 @@ const createChannelMessage = async (req, res) => {
 }
 
 const upadteChannelMessage = async (req, res) => {
-  const message = await ChannelMessage.findByIdAndUpdate({
-    _id: req.params.id
+  const message = await ChannelMessage.findOneAndUpdate({
+    _id: req.params.id,
+    user: req.body.user,
+    channel: req.body.channel
   }, req.body, {
     new: true,
     runValidators: true,
   })
 
   if (!message) {
-    throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
+    throw new ErrorAPIMessage(`No message has been found`, 404)
   }
 
   res.status(200).json({ message: message })
