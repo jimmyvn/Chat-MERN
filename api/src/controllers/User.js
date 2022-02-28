@@ -1,10 +1,11 @@
 const { ErrorAPIMessage } = require("../errors/customError")
 const Channel = require("../models/Channel")
 const User = require("../models/User")
+const mongoose = require('mongoose')
 
 const getAllUsers = async (req, res) => {
   const users = await User.find()
-  res.status(200).json({ users: users })
+  res.status(200).json({ data: users })
 }
 
 const getUser = async (req, res) => {
@@ -13,12 +14,12 @@ const getUser = async (req, res) => {
   if (!user) {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
-  res.status(200).json({ user: user })
+  res.status(200).json({ data: user })
 }
 
 const createUser = async (req, res) => {
   const user = await User.create(req.body)
-  res.status(200).json({ user: user })
+  res.status(200).json({ data: user })
 }
 
 const updateUser = async (req, res) => {
@@ -37,7 +38,7 @@ const updateUser = async (req, res) => {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
 
-  res.status(200).json({ user: user })
+  res.status(200).json({ data: user })
 }
 
 const deleteUser = async (req, res) => {
@@ -49,15 +50,23 @@ const deleteUser = async (req, res) => {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
 
-  res.status(200).json({ user: user })
+  res.status(200).json({ data: user })
 }
 
 const getChannelsBelongTo = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+    res.status(404).json({
+      success: false,
+      message: `There's no result for user with ID: ${req.params.userId}`
+    })
+    return
+  }
+
   const channels = await Channel.find({
     members: req.params.userId,
   })
 
-  res.status(200).json({ channels: channels })
+  res.status(200).json({ data: channels })
 }
 
 module.exports = {

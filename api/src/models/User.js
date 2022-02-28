@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 const bcrypt = require('bcryptjs')
-const Channel = require('./Channel')
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -76,6 +75,16 @@ UserSchema.methods.isMemberOfChannel = function (channel) {
   }
 
   return true
+}
+
+UserSchema.methods.comparePassword = function (password, callback) {
+  bcrypt.compare(password, this.password, function (error, isMatch) {
+    if (error) {
+      return callback(error)
+    } else {
+      callback(null, isMatch)
+    }
+  })
 }
 
 uniqueValidator.defaults.message = 'User with same `{PATH}` already exists. Please try with another email address.'

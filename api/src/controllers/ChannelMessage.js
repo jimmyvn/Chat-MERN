@@ -7,7 +7,7 @@ const getAllChannelMessages = async (req, res) => {
   await ChannelMessage.find({})
     .populate('user', '-__v -password -active -createdAt -updatedAt')
     .then((data) => {
-      res.status(200).json({ messages: data })
+      res.status(200).json({ data: data })
     })
 }
 
@@ -17,7 +17,7 @@ const getChannelMessage = async (req, res) => {
   if (!message) {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
-  res.status(200).json({ message: message })
+  res.status(200).json({ data: message })
 }
 
 const createChannelMessage = async (req, res) => {
@@ -36,24 +36,24 @@ const createChannelMessage = async (req, res) => {
   }
 
   const message = await ChannelMessage.create(req.body)
-  res.status(200).json({ message: message })
+  res.status(200).json({ data: message })
 }
 
 const upadteChannelMessage = async (req, res) => {
-  const message = await ChannelMessage.findOneAndUpdate({
-    _id: req.params.id,
-    user: req.body.user,
-    channel: req.body.channel
-  }, req.body, {
-    new: true,
-    runValidators: true,
-  })
+  const message = await ChannelMessage.findOneAndUpdate(
+    { _id: req.params.id },
+    { content: req.body.content },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
 
   if (!message) {
     throw new ErrorAPIMessage(`No message has been found`, 404)
   }
 
-  res.status(200).json({ message: message })
+  res.status(200).json({ data: message })
 }
 
 const deleteChannelMessage = async (req, res) => {
@@ -65,7 +65,7 @@ const deleteChannelMessage = async (req, res) => {
     throw new ErrorAPIMessage(`There's no result for ID: ${req.params.id}`, 404)
   }
 
-  res.status(200).json({ message: message })
+  res.status(200).json({ data: message })
 }
 
 module.exports = {

@@ -8,7 +8,8 @@ const ChannelMessageSchema = new mongoose.Schema({
   },
   channel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Channel'
+    ref: 'Channel',
+    required: [true, 'Channel Id field is required']
   },
   content: {
     type: String,

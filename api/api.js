@@ -5,8 +5,10 @@ require('express-async-errors')
 const express = require('express')
 const connectDatabase = require('./src/database/connect')
 const app = express()
+const auth = require('./src/middleware/auth')
 
 // Routes
+const authenticate = require('./src/routes/authenticate')
 const userRoutes = require('./src/routes/users')
 const channelRoutes = require('./src/routes/channels')
 const channelMemberRoutes = require('./src/routes/channelMembers')
@@ -17,10 +19,25 @@ const NotFound = require('./src/middleware/NotFound')
 const errorHandler = require('./src/middleware/errorHandler')
 app.use(express.json())
 
-app.use('/api/v1/users', userRoutes)
-app.use('/api/v1/channels', channelRoutes)
-app.use('/api/v1/channels', channelMemberRoutes)
-app.use('/api/v1/channel-messages', channelMessagesRoutes)
+// Curb Cores Error by adding a header here
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  )
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  )
+  next()
+})
+
+app.use('/api/v1/auth', authenticate)
+app.use('/api/v1/users', auth, userRoutes)
+app.use('/api/v1/channels', auth, channelRoutes)
+app.use('/api/v1/channels', auth, channelMemberRoutes)
+app.use('/api/v1/channel-messages', auth, channelMessagesRoutes)
 
 app.use(NotFound)
 app.use(errorHandler)

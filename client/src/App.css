@@ -1,0 +1,94 @@
+@import 'antd/dist/antd.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.firebase-emulator-warning {
+  display: none;
+}
+
+.chat-window-content {
+  height: 100vh;
+  background: radial-gradient(circle, rgba(116,116,116,1) 0%, rgba(23,102,122,1) 0%, rgba(0,40,50,1) 100%);
+}
+
+.chat-window-empty-channel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.channel__description {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header {
+  background: radial-gradient(circle, rgba(116,116,116,1) 0%, rgba(23,102,122,1) 0%, rgba(0,40,50,1) 100%);
+  color: #fff;
+}
+
+.header__left {
+  width: 50%;
+}
+
+.channel__name {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-infor .author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.message-infor .name {
+  font-weight: 400;
+}
+
+.message-infor .time {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.message-item .content {
+  margin-top: 5px;
+  padding-left: 42px;
+}
+
+.message-item {
+  border-radius: 12px;
+  padding: 10px;
+  background: #002445;
+  color: white;
+  margin: 10px;
+}
+
+.messages-list-and-form-send {
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: auto;
+}
+
+.message-item.own {
+  width: 40%;
+  margin-left: calc(60% - 10px);
+  margin-right: 10px;
+  background: #1990ff;
+}
+
+.message-item.other {
+  margin-right: 50%;
+  width: fit-content;
+  max-width: 50%;
+}
