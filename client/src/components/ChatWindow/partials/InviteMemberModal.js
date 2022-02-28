@@ -40,7 +40,7 @@ const DebounceSelect = ({ fetchFunc, debounceTimeout = 300, ...props }) => {
             <Avatar className="avatar" size='small' src={option.avatar}>
               {option.avatar ? '' : option.label?.charAt(0).toUpperCase()}
             </Avatar>
-            {option.label}
+            {option.label} ({option.email})
           </Select.Option>
         ))
       }
@@ -59,6 +59,7 @@ const fetchUsersToInvite = async (keyword, idChannelSelected) => {
     label: user.name,
     value: user._id,
     avatar: user.avatar,
+    email: user.email,
   }))
 }
 
