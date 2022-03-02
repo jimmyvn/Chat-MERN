@@ -67,7 +67,9 @@ const InviteMemberModal = () => {
   const {
     isDisplayInviteMemberModal,
     setIsDisplayInviteMemberModal,
-    channelSelected
+    channelSelected,
+    idChannelSelected,
+    setChannelMembers
   } = React.useContext(AppContext)
 
   const [value, setValue] = React.useState([])
@@ -79,11 +81,14 @@ const InviteMemberModal = () => {
 
     form.resetFields()
     setValue([])
+
     // Add members for channel
     const membersId = value.map((value) => value.value)
 
-    const res = await axios.post(`/channels/${channelSelected._id}/members`, {
+    await axios.post(`/channels/${idChannelSelected}/members`, {
       members: membersId
+    }).then((res) => {
+      setChannelMembers(res.data.data)
     })
   }
 
@@ -114,7 +119,7 @@ const InviteMemberModal = () => {
             fetchFunc={fetchUsersToInvite}
             onChange={newValue => setValue(newValue)}
             currentmembers={channelSelected.members}
-            idchannelselected={channelSelected._id}
+            idchannelselected={idChannelSelected}
           />
         </Form>
       </Modal>

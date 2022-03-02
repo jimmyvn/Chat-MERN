@@ -72,6 +72,7 @@ export default function AppProvider({ children }) {
     setIdChannelSelected,
     channelSelected,
     channelMembers,
+    setChannelMembers,
     clearState
   }}>
     {children}

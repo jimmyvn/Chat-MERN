@@ -73,8 +73,8 @@ const addMembersToChannel = async (req, res) => {
     req.params.channelId,
     { $push: { members: { $each: req.body.members } } },
     { new: true, useFindAndModify: false }
-  )
-  res.status(200).json({ success: true, data: channel })
+  ).populate('members', '-__v')
+  res.status(200).json({ success: true, data: channel.members })
 }
 
 const removeChannelMember = async (req, res) => {
@@ -98,7 +98,7 @@ const removeChannelMember = async (req, res) => {
     { new: true }
   ).populate('members')
 
-  res.status(200).json({ data: channel })
+  res.status(200).json({ data: channel.members })
 }
 
 module.exports = {
