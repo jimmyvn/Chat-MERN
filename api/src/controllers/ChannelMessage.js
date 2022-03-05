@@ -34,9 +34,13 @@ const createChannelMessage = async (req, res) => {
   if (!user.isMemberOfChannel(channel)) {
     throw new ErrorAPIMessage('The user is not a member in the channel', 500)
   }
-
-  const message = await ChannelMessage.create(req.body)
-  res.status(200).json({ data: message })
+  try {
+    const message = await ChannelMessage.create(req.body)
+    const newMessage = await message.populate('user', '-__v -password -active -createdAt -updatedAt')
+    res.status(200).json({ data: newMessage })
+  } catch (error) {
+    res.status(500).json({ error: error })
+  }
 }
 
 const upadteChannelMessage = async (req, res) => {

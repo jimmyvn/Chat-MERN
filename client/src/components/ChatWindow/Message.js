@@ -22,7 +22,7 @@ export default function Message(props) {
             {props.name}
           </div>
           <div className="time">
-            {formattedDate(props.createdAt.seconds)}
+            {formattedDate(props.createdAt)}
           </div>
         </div>
 

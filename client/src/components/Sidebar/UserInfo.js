@@ -4,6 +4,7 @@ import { LogoutOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { AuthContext } from '../../context/AuthProvider'
 import { AppContext } from '../../context/AppProvider'
+import { io } from 'socket.io-client'
 
 const WrapperUserInfoStyled = styled.div`
   display: flex;
@@ -19,12 +20,17 @@ const WrapperUserInfoStyled = styled.div`
 
 export default function UserInfo() {
   const { user, setUser } = React.useContext(AuthContext)
+  const { clearState } = React.useContext(AppContext)
+  const socket = React.useRef()
 
-  const { clearState } = React.useContext(AppContext);
+  React.useEffect(() => {
+    socket.current = io('ws://localhost:8900')
+  }, [])
 
   const handleSigOut = () => {
-    clearState()
     // handle logout
+    socket.current.emit('userLoggingOut', user._id)
+    clearState()
     localStorage.removeItem('user')
     setUser({})
   }

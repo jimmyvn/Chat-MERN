@@ -3,7 +3,7 @@ import { formatRelative } from 'date-fns'
 export const formattedDate = (seconds) => {
   let formattedDate = ''
   if (seconds) {
-    formattedDate = formatRelative(new Date(seconds * 1000), new Date())
+    formattedDate = formatRelative(new Date(seconds), new Date())
     formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)
   }
 

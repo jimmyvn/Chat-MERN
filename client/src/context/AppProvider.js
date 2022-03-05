@@ -25,7 +25,7 @@ export default function AppProvider({ children }) {
 
       const res = await axios.get(`/users/${_id}/channels`)
 
-      if (res.status == 200) {
+      if (res.status === 200) {
         setChannels(res.data.data)
       }
     }
@@ -48,7 +48,7 @@ export default function AppProvider({ children }) {
 
       const res = await axios.get(`/channels/${idChannelSelected}/members`)
 
-      if (res.status == 200) {
+      if (res.status === 200) {
         setChannelMembers(res.data.data)
       }
     }

@@ -25,7 +25,7 @@ const Login = () => {
           password: values.password,
         }
       )
-      if (res.data.success == true) {
+      if (res.data.success === true) {
         // save user information to sessionStorage
         localStorage.setItem('user', JSON.stringify(res.data.data))
         setUser(res.data.data)

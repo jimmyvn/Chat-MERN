@@ -36,9 +36,9 @@ const getChannelMessages = async (req, res) => {
 
   const messages = await ChannelMessage.find(
     { channel: req.params.channelId }
-  ).populate('user', '-__v -password -active -createdAt -updatedAt')
+  ).sort({ 'createdAt': -1 }).limit(20).populate('user', '-__v -password -active -createdAt -updatedAt')
 
-  res.status(200).json({ success: true, data: messages })
+  res.status(200).json({ success: true, data: messages.reverse() })
 }
 
 const createChannel = async (req, res) => {
@@ -46,7 +46,7 @@ const createChannel = async (req, res) => {
   const token = await req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM-TOKEN")
   const user = decodedToken
-  req.body.members = [user.userId]
+  req.body.members = [user?.userId]
 
   // Create channel
   const channel = await Channel.create(req.body)

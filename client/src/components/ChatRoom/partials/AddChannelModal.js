@@ -28,7 +28,7 @@ const AddChannelModal = () => {
           description: formData.description,
         }
       )
-      if (res.data.success == true) {
+      if (res.data.success === true) {
         // Success
       }
     } catch (error) {

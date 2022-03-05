@@ -72,7 +72,10 @@ export default function RoomList() {
               return <TypographyLinkStyled
                 key={channel._id}
                 className={idChannelSelected === channel._id ? 'active' : ''}
-                onClick={() => setIdChannelSelected(channel._id)}
+                onClick={() => {
+                  console.log(`Switched to channel: ${channel._id}`);
+                  setIdChannelSelected(channel._id)
+                }}
               >
                 <LinkOutlined style={{ marginRight: '5px' }} />
                 {channel.title}
