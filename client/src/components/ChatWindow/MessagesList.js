@@ -57,8 +57,8 @@ export default function MessagesList() {
 
   React.useEffect(() => {
     socket.current = io('ws://localhost:8900')
-    socket.current.on('getMessage', (dataMessage) => {
-      delete dataMessage.members
+    socket.current.on('getMessageChannel', (dataMessage) => {
+      console.log(dataMessage);
       setArrivalMessageFromSocket(dataMessage)
     })
   }, [])
@@ -86,10 +86,7 @@ export default function MessagesList() {
 
     await axios.post(`/channel-messages`, formData)
       .then((res) => {
-        socket.current.emit('sendMessage', {
-          ...res.data.data,
-          members: channelSelected.members
-        })
+        socket.current.emit('sendMessageChannel', res.data.data)
         setMessages((prevMessages) => [...prevMessages, res.data.data])
       })
 

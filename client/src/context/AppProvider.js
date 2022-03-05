@@ -1,6 +1,7 @@
 import React from 'react'
 import { AuthContext } from './AuthProvider'
 import axios from '../configs/AxiosService'
+import { io } from 'socket.io-client'
 
 export const AppContext = React.createContext()
 
@@ -11,6 +12,11 @@ export default function AppProvider({ children }) {
   const [idChannelSelected, setIdChannelSelected] = React.useState(undefined)
   const [channels, setChannels] = React.useState([])
   const [channelMembers, setChannelMembers] = React.useState([])
+  const socket = React.useRef()
+
+  React.useEffect(() => {
+    socket.current = io('ws://localhost:8900')
+  }, [])
 
   const { user: {
     _id
@@ -27,6 +33,10 @@ export default function AppProvider({ children }) {
 
       if (res.status === 200) {
         setChannels(res.data.data)
+        socket.current.emit('userAccessPage', {
+          _id: _id,
+          channels: res.data.data
+        })
       }
     }
 

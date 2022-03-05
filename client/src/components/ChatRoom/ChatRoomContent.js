@@ -3,23 +3,23 @@ import { Col } from 'antd'
 import Sidebar from '../Sidebar'
 import ChatWindow from '../ChatWindow'
 import { AuthContext } from '../../context/AuthProvider'
-import { io } from 'socket.io-client'
-import { AppContext } from '../../context/AppProvider'
+// import { io } from 'socket.io-client'
+// import { AppContext } from '../../context/AppProvider'
 
 export default function ChatRoomContent() {
-  const socket = React.useRef()
+  // const socket = React.useRef()
 
   const { user: { _id } } = React.useContext(AuthContext)
 
-  React.useEffect(() => {
-    socket.current = io('ws://localhost:8900')
-  }, [])
+  // React.useEffect(() => {
+  //   socket.current = io('ws://localhost:8900')
+  // }, [])
 
-  React.useEffect(() => {
-    if (_id !== undefined) {
-      socket.current.emit('userAccessPage', _id)
-    }
-  }, [_id])
+  // React.useEffect(() => {
+  //   if (_id !== undefined) {
+  //     socket.current.emit('userAccessPage', _id)
+  //   }
+  // }, [_id])
 
   return (
     <>

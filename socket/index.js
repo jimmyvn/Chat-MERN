@@ -29,24 +29,32 @@ const getUser = (userId) => {
   return users.find(user => user.userId === userId)
 }
 
-io.on('connection', async (socket) => {
+const getActiveRooms = (io) => {
+  const arr = Array.from(io.sockets.adapter.rooms)
+  const filtered = arr.filter(room => !room[1].has(room[0]))
+  return filtered.map(i => i[0])
+}
+
+io.on('connection', (socket) => {
   console.log("A user has been connected.")
-  socket.on('userAccessPage', (userId) => {
-    addUser(userId, socket.id)
+  socket.on('userAccessPage', (payload) => {
+    const channels = payload.channels
+    // channels.forEach((channel) => {
+    //   socket.leave(channel._id.toString())
+    // })
+    channels.forEach(channel => {
+      socket.join(channel._id.toString())
+    })
+    addUser(payload._id, socket.id)
+    console.log(socket.rooms)
   })
 
-  socket.on('sendMessage', async (dataMessage) => {
-    const userIds = dataMessage.members
-    io.emit('getMessage', dataMessage)
-    // console.log(dataMessage);
-    // for (let i = 0; i < userIds.length; ++i) {
-    //   const user = await getUser(userIds[i])
-    //   console.log(userIds[i], user);
-    //   if (user) {
-    //     io.to(user.socketId).emit('getMessage', dataMessage)
-    //   }
-    // }
+  socket.on('sendMessageChannel', (dataMessage) => {
+    console.log(dataMessage.channel, dataMessage)
+    io.to(dataMessage.channel.toString()).emit('getMessageChannel', dataMessage)
+    // io.emit('getMessageChannel', dataMessage)
   })
+
 
   socket.on('userLoggingOut', (userId) => {
     console.log(`${userId}, ${socket.id} is logging out.`)
@@ -54,7 +62,9 @@ io.on('connection', async (socket) => {
   })
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected.');
+    console.log('A user disconnected.')
     removeUserBySocketId(socket.id)
   })
+
+
 })
