@@ -37,15 +37,15 @@ io.on('connection', async (socket) => {
 
   socket.on('sendMessage', async (dataMessage) => {
     const userIds = dataMessage.members
-    // io.emit('getMessage', dataMessage)
+    io.emit('getMessage', dataMessage)
     // console.log(dataMessage);
-    for (let i = 0; i < userIds.length; ++i) {
-      const user = await getUser(userIds[i])
-      console.log(userIds[i], user);
-      if (user) {
-        io.to(user.socketId).emit('getMessage', dataMessage)
-      }
-    }
+    // for (let i = 0; i < userIds.length; ++i) {
+    //   const user = await getUser(userIds[i])
+    //   console.log(userIds[i], user);
+    //   if (user) {
+    //     io.to(user.socketId).emit('getMessage', dataMessage)
+    //   }
+    // }
   })
 
   socket.on('userLoggingOut', (userId) => {

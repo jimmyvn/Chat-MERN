@@ -68,6 +68,7 @@ export default function AppProvider({ children }) {
     isDisplayInviteMemberModal,
     setIsDisplayInviteMemberModal,
     channels,
+    setChannels,
     idChannelSelected,
     setIdChannelSelected,
     channelSelected,

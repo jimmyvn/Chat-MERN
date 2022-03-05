@@ -9,7 +9,8 @@ const AddChannelModal = () => {
 
   const {
     isDisplayAddChannelModal,
-    setIsDisplayAddChannelModal
+    setIsDisplayAddChannelModal,
+    setChannels,
   } = React.useContext(AppContext)
 
   const handleOk = async () => {
@@ -29,7 +30,7 @@ const AddChannelModal = () => {
         }
       )
       if (res.data.success === true) {
-        // Success
+        setChannels((prevChannels) => [...prevChannels, res.data.data])
       }
     } catch (error) {
       console.error(error)
